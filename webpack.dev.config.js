@@ -1,6 +1,6 @@
-const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const pkg = require('./package.json')
+const { clientId } = require('./config')
 
 module.exports = {
   mode: 'development',
@@ -8,7 +8,7 @@ module.exports = {
   output: {
     library: pkg.author,
     filename: 'module.js',
-    path: resolve('example')
+    publicPath: 'example'
   },
   module: {
     rules: [
@@ -16,11 +16,11 @@ module.exports = {
     ]
   },
   plugins: [new HtmlWebpackPlugin({
-    clientId: ''
+    clientId: clientId
   })],
   devtool: 'source-map',
   devServer: {
-    contentBase: resolve('example'),
+    contentBase: 'example',
     watchContentBase: true,
     historyApiFallback: {
       index: 'index.html'
