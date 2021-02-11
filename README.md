@@ -1,7 +1,7 @@
 # Youtube Data API client for web
 WIP.
 
-This module is *reinventing the wheel*.  
+This module is **reinventing the wheel**.  
 You can find a better API.
 
 ## Prep work
