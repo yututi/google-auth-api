@@ -16,7 +16,7 @@ module.exports = {
     ]
   },
   plugins: [new HtmlWebpackPlugin({
-    clientId: '88457129753-tqqvr0ds1j2d20dojtirv21kn78bfi5n.apps.googleusercontent.com'
+    clientId: ''
   })],
   devtool: 'source-map',
   devServer: {
