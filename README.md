@@ -36,3 +36,6 @@ auth.on("login", token => {
 // Initialize authorization module.
 auth.init()
 ```
+
+## Docs
+(here)[https://yututi.github.io/youtube-data-api-web-client/]
