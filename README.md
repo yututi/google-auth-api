@@ -38,4 +38,4 @@ auth.init()
 ```
 
 ## Docs
-(here)[https://yututi.github.io/youtube-data-api-web-client/]
+[here](https://yututi.github.io/youtube-data-api-web-client/)
