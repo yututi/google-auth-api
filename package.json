@@ -7,7 +7,8 @@
     "build": "webpack",
     "dev": "webpack serve --config webpack.dev.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js --ignore-path .gitignore ."
+    "lint": "eslint --ext .js --ignore-path .gitignore .",
+    "gen:doc": "documentation build src/index.js -f html -o docs"
   },
   "repository": {
     "type": "git"
@@ -21,12 +22,14 @@
     "@babel/eslint-plugin": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
     "babel-loader": "^8.2.2",
+    "documentation": "^13.1.1",
     "eslint": "^7.18.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
+    "html-webpack-plugin": "^5.0.0",
     "webpack": "^5.19.0",
     "webpack-cli": "^4.4.0",
     "webpack-dev-server": "^3.11.2"

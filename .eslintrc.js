@@ -3,7 +3,8 @@ module.exports = {
   parser: '@babel/eslint-parser',
   plugins: ['@babel'],
   env: {
-    es6: true
+    es6: true,
+    browser: true
   },
   extends: 'standard'
 }
