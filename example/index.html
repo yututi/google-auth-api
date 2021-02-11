@@ -8,13 +8,43 @@
   <script src="module.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      document.body.textContent = message
+      const auth = new Auth({
+        clientId: '<%= htmlWebpackPlugin.options.clientId %>',
+        redirectUrl: 'http://localhost:8080/login',
+        scope: ['https://www.googleapis.com/auth/fitness.activity.read']
+      })
+
+      auth.on("denied", msg => {
+        alert(msg)
+        document.body.innerHTML = `<button id="login">login</button>`
+        addListener()
+      })
+      auth.on("login", token => {
+        document.body.textContent = `login. token = ${token}`
+        const youtubeApi = new YoutubeApi(auth)
+        youtubeApi.channels.list({
+          part: "me"
+        }).then(response => {
+          document.body.textContent = `login. token = ${token}
+          ${response.json().toString()}
+          `
+        })
+      })
+      auth.init()
+
+      const addListener = () => {
+        login.addEventListener("click", () => {
+          auth.getToken()
+        })
+      }
+      addListener()
     })
   </script>
 </head>
 
 <body>
 
+  <button id="login">login</button>
 </body>
 
 </html>
