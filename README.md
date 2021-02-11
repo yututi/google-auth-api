@@ -2,7 +2,7 @@
 WIP.
 
 This module is **reinventing the wheel**.  
-You can find a better API.
+You can find a better module.
 
 ## Prep work
 1. [Create your OAuth2.0 Client ID](https://console.cloud.google.com/apis/credentials)
