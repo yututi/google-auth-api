@@ -1,5 +1,8 @@
-# Youtube Data API cliend for web
-WIP
+# Youtube Data API client for web
+WIP.
+
+This module is *reinventing the wheel*.  
+You can find a better API.
 
 ## Prep work
 1. [Create your OAuth2.0 Client ID](https://console.cloud.google.com/apis/credentials)
@@ -33,4 +36,3 @@ auth.on("login", token => {
 // Initialize authorization module.
 auth.init()
 ```
-
