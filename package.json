@@ -1,18 +1,18 @@
 {
-  "name": "web-module-template",
-  "version": "1.0.0",
+  "name": "oauth2-implicitgrant",
+  "version": "0.0.1",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/oauth2-implicitgrant.js",
+  "module": "src/index.js",
   "scripts": {
     "build": "webpack",
-    "dev": "webpack serve --config webpack.dev.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js --ignore-path .gitignore ."
+    "dev": "webpack serve --config webpack.dev.config.js"
   },
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/yututi/oauth2-implicitgrant.git"
   },
-  "keywords": [],
+  "keywords": ["auth", "authorization", "oauth"],
   "author": "yututi",
   "license": "WTFPL",
   "devDependencies": {

@@ -1,4 +1,5 @@
 node_modules/
-dist/
-config.js
 docs/
+example/
+config.js
+.vscode/
