@@ -1,5 +1,4 @@
 # OAuth2.0 implicit grant module
-WIP.
 
 This module is **reinventing the wheel**.  
 You can find a better module.
