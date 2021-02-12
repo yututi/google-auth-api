@@ -1,4 +1,4 @@
-# Google API Auth module
+# OAuth2.0 implicit flow module
 WIP.
 
 This module is **reinventing the wheel**.  
@@ -9,7 +9,7 @@ You can find a better module.
 
 ## How to use
 ```js
-const auth = new Auth({
+const auth = OAuth2ImplicitGrant.forGoogleApi({
   clientId: 'your client id that created above.',
   redirectUrl: 'your redirect url',
   scope: ['scopes that you want']
@@ -24,7 +24,7 @@ auth.init({
   }
 }).then(isLoggedIn => {
   if(isLoggedIn) {
-    // if once logged in, you can access google api via "proxyFetch" method
+    // if once logged in, you can access api via "proxyFetch" method
     auth.proxyFetch(`https://www.googleapis.com/youtube/v3/subscriptions?${new URLSearchParams({
       part: "snippet",
       mine: true

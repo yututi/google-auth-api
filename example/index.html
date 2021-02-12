@@ -7,7 +7,7 @@
   <title>example</title>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const auth = new Auth({
+      const auth = OAuth2ImplicitGrant.forGoogleApi({
         clientId: '<%= htmlWebpackPlugin.options.clientId %>',
         redirectUrl: 'http://localhost:8080/login',
         scope: ['https://www.googleapis.com/auth/youtube.readonly']

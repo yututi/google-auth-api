@@ -1,5 +1,5 @@
-import Auth from './Auth'
+import OAuth2ImplicitGrant from './OAuth2ImplicitGrant'
 
-window.Auth = Auth
+window.OAuth2ImplicitGrant = OAuth2ImplicitGrant
 
-export default { Auth }
+export default OAuth2ImplicitGrant
