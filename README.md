@@ -1,4 +1,4 @@
-# OAuth2.0 implicit flow module
+# OAuth2.0 implicit grant module
 WIP.
 
 This module is **reinventing the wheel**.  
