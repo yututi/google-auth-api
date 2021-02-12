@@ -1,14 +1,10 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const pkg = require('./package.json')
-const { clientId } = require('./config')
 
 module.exports = {
   mode: 'development',
   entry: './src/index.js',
   output: {
-    library: pkg.author,
-    filename: 'module.js',
-    publicPath: 'example'
+    filename: 'module.js'
   },
   module: {
     rules: [
@@ -16,14 +12,14 @@ module.exports = {
     ]
   },
   plugins: [new HtmlWebpackPlugin({
-    clientId: clientId
+    template: 'example/index.html',
+    clientId: require('./config').cliendId,
+    inject: true
   })],
   devtool: 'source-map',
   devServer: {
-    contentBase: 'example',
-    watchContentBase: true,
     historyApiFallback: {
-      index: 'index.html'
+      index: '/'
     }
   }
 }

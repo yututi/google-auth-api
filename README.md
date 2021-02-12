@@ -27,7 +27,8 @@ auth.on("login", token => {
 
   // Call youtube data api.
   youtubeApi.channels.list({
-    part: "me"
+    part: "snippet",
+    mine: true
   })
   .then(response => response.json())
   .then(json => console.log(json))

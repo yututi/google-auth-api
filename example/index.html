@@ -5,13 +5,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>example</title>
-  <script src="module.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const auth = new Auth({
         clientId: '<%= htmlWebpackPlugin.options.clientId %>',
         redirectUrl: 'http://localhost:8080/login',
-        scope: ['https://www.googleapis.com/auth/fitness.activity.read']
+        scope: ['https://www.googleapis.com/auth/youtube.readonly']
       })
 
       auth.on("denied", msg => {
@@ -23,10 +22,13 @@
         document.body.textContent = `login. token = ${token}`
         const youtubeApi = new YoutubeApi(auth)
         youtubeApi.channels.list({
-          part: "me"
-        }).then(response => {
+          part: "snippet",
+          mine: true
+        })
+        .then(response => response.json())
+        .then(json => {
           document.body.textContent = `login. token = ${token}
-          ${response.json().toString()}
+          ${json.toString()}
           `
         })
       })
