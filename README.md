@@ -1,4 +1,4 @@
-# OAuth2.0 implicit grant module
+# Web client library for OAuth2.0 implicit grant
 
 This module is **reinventing the wheel**.  
 You can find a better module.
