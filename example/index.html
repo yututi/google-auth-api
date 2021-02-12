@@ -13,26 +13,44 @@
         scope: ['https://www.googleapis.com/auth/youtube.readonly']
       })
 
-      auth.on("denied", msg => {
-        alert(msg)
-        document.body.innerHTML = `<button id="login">login</button>`
-        addListener()
+      auth.init({
+        onLogin: () => {
+          // should route to authorized home view.
+        },
+        onDenied: () => {
+          // should route to login view.
+        }
+      }).then(isLoggedIn => {
+        if(isLoggedIn) {
+          // const youtubeApi = new YoutubeApi(auth)
+          // youtubeApi.channels.list({
+          //   part: "snippet",
+          //   mine: true
+          // })
+          // .then(response => response.json())
+          // .then(json => {
+          //   console.log(json)
+          // })
+
+          auth.proxyFetch(`https://www.googleapis.com/youtube/v3/subscriptions?${new URLSearchParams({
+            part: "snippet",
+            mine: true
+          }).toString()}`)
+            .then(response => response.json())
+            .then(json => console.log(json))
+
+          // auth.proxyFetch(`https://www.googleapis.com/youtube/v3/search?${new URLSearchParams({
+          //   part: "snippet",
+          //   type: "video",
+          //   eventType: "upcoming",
+          //   channelId: "UC-hM6YJuNYVAmUWxeIr9FeA"
+          // }).toString()}`)
+          //   .then(response => response.json())
+          //   .then(json => console.log(json))
+        } else {
+          login.style.display = "block"
+        }
       })
-      auth.on("login", token => {
-        document.body.textContent = `login. token = ${token}`
-        const youtubeApi = new YoutubeApi(auth)
-        youtubeApi.channels.list({
-          part: "snippet",
-          mine: true
-        })
-        .then(response => response.json())
-        .then(json => {
-          document.body.textContent = `login. token = ${token}
-          ${json.toString()}
-          `
-        })
-      })
-      auth.init()
 
       const addListener = () => {
         login.addEventListener("click", () => {
@@ -46,7 +64,7 @@
 
 <body>
 
-  <button id="login">login</button>
+  <button style="display:none;" id="login">login</button>
 </body>
 
 </html>

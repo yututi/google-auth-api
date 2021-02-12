@@ -1,4 +1,4 @@
-// This implementation is refer to https://developers.google.com/youtube/v3/guides/auth/client-side-web-apps
+// This implementation is based on https://developers.google.com/youtube/v3/guides/auth/client-side-web-apps
 
 const RESPONSE_TYPE = 'token'
 const GET_TOKEN_URL = 'https://accounts.google.com/o/oauth2/auth'
@@ -20,35 +20,15 @@ export default class Auth {
     this.clientId = init.clientId
     this.redirectUrl = init.redirectUrl
     this.scope = init.scope
-    this.listeners = {}
     this.userId = null
   }
 
   /**
-   * return true if Authorized.
+   * Return true if Authorized.
    * @returns {boolean}
    */
   get isAuthorized () {
     return !!this.token
-  }
-
-  /**
-   * add login or denied event listener.
-   * @param {"login"|"denied"} eventName
-   * @param {()=>void} callback
-   */
-  on (eventName, callback) {
-    const listeners = this.getListeners(eventName)
-    listeners.push(callback)
-  }
-
-  getListeners (eventName) {
-    const listeners = this.listeners[eventName] = this.listeners[eventName] || []
-    return listeners
-  }
-
-  invokeListeners (eventName, eventArgs) {
-    this.getListeners(eventName).forEach(listener => listener(eventArgs))
   }
 
   /**
@@ -61,39 +41,41 @@ export default class Auth {
    * Otherwise, dispatch "denied" event.
    * @return {Promise<void>}
    */
-  async init () {
+  async init ({ onLogin, onDenied }) {
     const url = window.location.href
     if (url.startsWith(this.redirectUrl)) {
       const param = new URLSearchParams('?' + window.location.hash.substring(1))
       if (param.has('error')) {
-        this.invokeListeners('denied', 'access denied.')
+        onDenied(param.get('error'))
       }
       const token = param.get('access_token')
-      return await this.verifyToken(token)
+      this.saveToken(token)
+      onLogin()
+      return true
     }
 
     const token = this.getTokenFromLocalStorage()
     if (token) {
-      return await this.verifyToken(token)
+      return await this.verifyToken(token, onDenied)
     }
 
-    // Await invocation of getToken.
+    return false
   }
 
-  async verifyToken (token) {
+  async verifyToken (token, onDenied) {
     const response = await fetch(`${VERIFY_TOKEN_URL}?access_token=${token}`)
     const { audience, error } = await response.json()
 
     if (error) {
       this.saveToken(null)
-      this.invokeListeners('denied', error)
-      return
+      onDenied(error)
+      return false
     }
 
     if (audience !== this.clientId) {
       this.saveToken(null)
-      this.invokeListeners('denied', `audience is invalid: ${audience}`)
-      return
+      onDenied(`audience is invalid: ${audience}`)
+      return false
     }
 
     // this.userId = userid
@@ -101,7 +83,7 @@ export default class Auth {
     if (token) {
       this.saveToken(token)
     }
-    this.invokeListeners('login', token)
+    return true
   }
 
   saveToken (token) {
@@ -131,8 +113,7 @@ export default class Auth {
   }
 
   /**
-   * disable current token.
-   * this cause denied event.
+   * Disable current token.
    */
   async revokeToken () {
     if (!this.token) return
@@ -141,13 +122,13 @@ export default class Auth {
       token: this.token
     })
     await fetch(`${REVOKE_TOKEN_URL}?${params.toString()}`)
-    this.invokeListeners('denied', 'token revoked.')
   }
 
   /**
    *
    * @param {string} url
    * @param {RequestInit} init
+   * @returns {Promise<Response}
    */
   async proxyFetch (url, init = {}) {
     init.headers = {

@@ -1,4 +1,4 @@
-# Youtube Data API client for web
+# Google API Auth module
 WIP.
 
 This module is **reinventing the wheel**.  
@@ -15,27 +15,26 @@ const auth = new Auth({
   scope: ['scopes that you want']
 })
 
-// Denied event.
-auth.on("denied", msg => {
-  alert(msg)
+auth.init({
+  onLogin: () => {
+    // should route to authorized home view.
+  },
+  onDenied: () => {
+    // should route to login view.
+  }
+}).then(isLoggedIn => {
+  if(isLoggedIn) {
+    // if once logged in, you can access google api via "proxyFetch" method
+    auth.proxyFetch(`https://www.googleapis.com/youtube/v3/subscriptions?${new URLSearchParams({
+      part: "snippet",
+      mine: true
+    }).toString()}`)
+      .then(response => response.json())
+      .then(json => console.log(json))
+  } else {
+    // should route to login view.
+  }
 })
-
-// Login event.
-auth.on("login", token => {
-  // Once you are logged in, you can use YoutubeApi.
-  const youtubeApi = new YoutubeApi(auth)
-
-  // Call youtube data api.
-  youtubeApi.channels.list({
-    part: "snippet",
-    mine: true
-  })
-  .then(response => response.json())
-  .then(json => console.log(json))
-})
-
-// Initialize authorization module.
-auth.init()
 ```
 
 ## Docs
