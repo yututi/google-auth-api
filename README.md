@@ -7,8 +7,16 @@ You can find a better module.
 ## Prep work
 1. [Create your OAuth2.0 Client ID](https://console.cloud.google.com/apis/credentials)
 
+## Installation
+```
+npm i oauth2-implicitgrant
+```
+
 ## How to use
+
 ```js
+import OAuth2ImplicitGrant from "oauth2-implicitgrant"
+
 const auth = OAuth2ImplicitGrant.forGoogleApi({
   clientId: 'your client id that created above.',
   redirectUrl: 'your redirect url',
