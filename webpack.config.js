@@ -6,7 +6,6 @@ module.exports = {
   mode: 'production',
   entry: './src/index.js',
   output: {
-    library: pkg.author,
     filename: `${pkg.name}.js`,
     path: resolve('dist')
   },
