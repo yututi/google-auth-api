@@ -1,0 +1,6 @@
+.github/
+.vscode/
+example/
+.eslintignore
+.eslintrc.js
+config.js
