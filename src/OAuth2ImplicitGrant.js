@@ -64,48 +64,48 @@ export default class OAuth2ImplicitGrant {
    * Otherwise, invoke "onDenied" event.
    * @return {Promise<boolean>}
    */
-  async init ({ onLogin, onDenied }) {
+  async init ({ onDenied }) {
+    this.onDenied = onDenied || ((msg) => {console.warn(msg)})
     const url = window.location.href
     if (url.startsWith(this.redirectUrl)) {
       const param = new URLSearchParams('?' + window.location.hash.substring(1))
       if (param.has('error')) {
-        onDenied(param.get('error'))
+        this.onDenied(param.get('error'))
         return false
       }
       // Check state.
       if (this.state) {
         if (this.state !== param.get('state')) {
-          onDenied(`different state. expected:${this.state}, but:${param.get('state')}`)
+          this.onDenied(`different state. expected:${this.state}, but:${param.get('state')}`)
           return false
         }
       }
       const token = param.get('access_token')
       this.saveToken(token)
-      onLogin()
       return true
     }
 
     const token = this.getTokenFromLocalStorage()
     if (token) {
-      return await this.verifyToken(token, onDenied)
+      return await this.verifyToken(token)
     }
 
     return false
   }
 
-  async verifyToken (token, onDenied) {
+  async verifyToken (token) {
     const response = await fetch(`${this.verifyTokenUrl}?access_token=${token}`)
     const { audience, error } = await response.json()
 
     if (error) {
       this.saveToken(null)
-      onDenied(error)
+      this.onDenied(error)
       return false
     }
 
     if (audience !== this.clientId) {
       this.saveToken(null)
-      onDenied(`audience is invalid: ${audience}`)
+      this.onDenied(`audience is invalid: ${audience}`)
       return false
     }
 
@@ -168,6 +168,12 @@ export default class OAuth2ImplicitGrant {
       ...init.headers || {},
       Authorization: `Bearer ${this.token}`
     }
-    return await fetch(url, init)
+    return await fetch(url, init).then(response => {    
+      // unauthorized, forbidden
+      if ([403, 401].includes(response.status)) {
+        if(this.onDenied) this.onDenied()
+      }
+      return response
+    })
   }
 }

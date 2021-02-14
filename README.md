@@ -1,6 +1,6 @@
 # Web client library for OAuth2.0 implicit grant
 
-This module is **reinventing the wheel**.  
+This library is **reinventing the wheel** for my own use.  
 You can find a better module.
 
 ## Prep work
@@ -23,10 +23,8 @@ const auth = OAuth2ImplicitGrant.forGoogleApi({
 })
 
 auth.init({
-  onLogin: () => {
-    // should route to authorized home view.
-  },
   onDenied: () => {
+    // Something happen in authorization flow or token was expired.
     // should route to login view.
   }
 }).then(isLoggedIn => {
@@ -42,6 +40,12 @@ auth.init({
     // should route to login view.
   }
 })
+
+const doLogin = {
+  // Go to authentication page.
+  auth.getToken()
+}
+
 ```
 
 ## Docs
