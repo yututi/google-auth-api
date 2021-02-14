@@ -41,7 +41,7 @@ auth.init({
   }
 })
 
-const doLogin = {
+const doLogin = () => {
   // Go to authentication page.
   auth.getToken()
 }
